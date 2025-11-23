@@ -5,7 +5,7 @@
  *          The game dynamically updates based on the selected month, providing audio feedback
  *          and visual rewards. Users earn stars for correct matches and can reset the game.
  * 
- * Author(s): Preksha Joon, Aaron Gonsalves
+ * Author(s): Preksha Joon, Aaron Gonsalves, Mark Louis Tabudlong
  * Assisted by: ChatGPT (Documentation assistance + Fixing Roadblocks)
  * 
  * COTS Used:
@@ -14,15 +14,14 @@
  * - Local assets for images (Michael's efforts and Microsoft Designer) and audio files.
  */
 
-
-
-import React, { useEffect, useState, useCallback } from "react";
-import { WORD_INFO } from "../WordBank";
-import MobileView from "./MobileView";
-import DesktopView from "./DesktopView";
-import tryAgainAudio from "../audio/tryagain.mp3";
+import { useCallback, useEffect, useState } from "react";
 import congratulationsAudio from "../audio/congratulatory.mp3";
+import tryAgainAudio from "../audio/tryagain.mp3";
+import FeedbackScreen from "../FeedbackScreen";
 import inactivePanel from "../images/colour.jpg";
+import { WORD_INFO } from "../WordBank";
+import DesktopView from "./DesktopView";
+import MobileView from "./MobileView";
 
 /**
  * WordDistribution Component
@@ -33,80 +32,102 @@ import inactivePanel from "../images/colour.jpg";
  * - month: (number) The selected number corresponding to the month based on the words of the month, 
  * which determines the set of words and game logic.
  */
-function WordDistribution({ month }) {
-  const [callCount, setCallCount] = useState(0);
+function WordDistribution({ month, language = "english" }) {
   const [boxes, setBoxes] = useState([]);
-  const [initWords, setInitWords] = useState([]);
+  const [allWords, setAllWords] = useState([]);
   const [isInitialized, setIsInitialized] = useState(false);
   const [displayText, setDisplayText] = useState("");
   const [displayAudio, setDisplayAudio] = useState("");
   const [displayImage, setDisplayImage] = useState("");
-  const [roundDisplay, setRoundDisplay] = useState(callCount + "/" + month);
+  const [roundDisplay, setRoundDisplay] = useState("1/1");
   const [successCount, setSuccessCount] = useState(0);
   const [gameEnd, setGameEnd] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [attempts, setAttempts] = useState(0);
+  const [currentCorrectAnswer, setCurrentCorrectAnswer] = useState("");
+  const [selectedWrongImage, setSelectedWrongImage] = useState("");
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
-  /**
+ /**
    * gameOver
    * 
    * Purpose: Determines if the game has ended based on the number of rounds played.
    */
   const GameOver = useCallback(() => {
-    if (month < 9) {
-      if ((month === 3 && callCount === 3) || (month === 6 && callCount === 6)) {
-        setGameEnd(true);
-      }
-    } else {
-      if (callCount === month) setGameEnd(true);
+    if (currentWordIndex >= allWords.length) {
+      setGameEnd(true);
     }
-  }, [month, callCount]);
+  }, [currentWordIndex, allWords.length]);
 
   /**
-   * generateWordArray
+   * GenerateGridForCurrentWord
    * 
-   * Purpose: Generates a new word array for the grid, shuffling words and preparing the game state for the next round. 
-   * Also, selects the question word for each round, and updates it on display.
+   * Purpose: Create 3x3 grid with only 3 images in first column
    */
-  const GenerateWordArray = useCallback(() => {
-    if (!initWords || initWords.length === 0) return;
-    GameOver();
-
-    const currentIndex = callCount % initWords.length;
-    const fixedWord = initWords[currentIndex];
-    const fixedTextValue = fixedWord.text;
-    const fixedImageValue = fixedWord.image;
-    const fixedAudioValue = fixedWord.audio;
-
-    let x;
-    if (month === 3) {
-      x = 6;
-    } else if (month === 6) {
-      x = 3;
-    } else {
-      x = 0;
+  const GenerateGridForCurrentWord = useCallback(() => {
+    if (!allWords || allWords.length === 0 || currentWordIndex >= allWords.length) {
+      setGameEnd(true);
+      return;
     }
+    
+    const currentWord = allWords[currentWordIndex];
+    const fixedTextValue = currentWord.text;
+    const fixedImageValue = currentWord.image;
+    const fixedAudioValue = currentWord.audio;
 
-    const newInitWords = initWords.filter((_, index) => index !== currentIndex);
-    const shuffleWords = [...newInitWords]
-      .concat(
-        new Array(x).fill({
-          text: "none",
-          image: inactivePanel,
-          audio: "",
-        })
-      )
-      .sort(() => Math.random() - 0.5);
+    // Get other words from the current month's selection
+    const otherWords = allWords.filter((_, index) => index !== currentWordIndex);
+    
+    // Since there are 20 words and 7 months, the last month only has 2 images. Use the very first word as the last.
+    let remainingWords = [...otherWords];
+    if (month === 20) {
+      // Use the first word from the first month (September - nin)
+      const firstMonthFirstWord = WORD_INFO[0]
+      remainingWords.push(firstMonthFirstWord);
+    }
+    
+    // Create randomized active images array 
+    const activeImages = [currentWord, ...remainingWords.slice(0, 2)]
+    .sort(() => Math.random() - 0.5); 
+    
+    // Fill remaining spots with inactive panels to make 9 total
+    const inactiveCount = 6;
+    const inactivePanels = new Array(inactiveCount).fill({
+      text: "none",
+      image: inactivePanel,
+      audio: "",
+    });
 
-    const remainingWords = shuffleWords.slice(0, 8);
-    const grid = [fixedWord, ...remainingWords].sort(() => Math.random() - 0.5);
+    // Create grid with active images first, then inactive panels
+    const grid = [...activeImages, ...inactivePanels];
 
-    setCallCount((prevCount) => prevCount + 1);
     setBoxes(grid);
     setDisplayText(fixedTextValue);
     setDisplayImage(fixedImageValue);
     setDisplayAudio(fixedAudioValue);
-  }, [callCount, initWords, month, GameOver]);
+    setCurrentCorrectAnswer(fixedTextValue);
+    setAttempts(0);
+    setSelectedWrongImage("");
+    
+    // Update round display
+    setRoundDisplay((currentWordIndex + 1) + "/" + 3);
+  }, [allWords, currentWordIndex, month]);
 
-  // Purpose:Update words to be fillled in he grid  based on the month after randomizing the words, initiallize round Count
+  const MoveToNextWord = useCallback(() => {
+    const nextIndex = currentWordIndex + 1;
+    
+    if (nextIndex >= allWords.length) {
+      setGameEnd(true);
+    } else {
+      setCurrentWordIndex(nextIndex);
+    }
+    
+    setAttempts(0);
+    setShowFeedback(false);
+  }, [currentWordIndex, allWords.length]);
+
+  // Update words based on month 
   useEffect(() => {
     let words = [];
     switch (month) {
@@ -114,61 +135,105 @@ function WordDistribution({ month }) {
         words = WORD_INFO.slice(0, 3);
         break;
       case 6:
-        words = WORD_INFO.slice(0, 6);
+        words = WORD_INFO.slice(3, 6);
         break;
       case 9:
-        words = WORD_INFO.slice(0, 9);
+        words = WORD_INFO.slice(6, 9);
         break;
       case 12:
-        words = WORD_INFO.slice(0, 12);
+        words = WORD_INFO.slice(9, 12);
         break;
       case 15:
-        words = WORD_INFO.slice(0, 15);
+        words = WORD_INFO.slice(12, 15);
         break;
       case 18:
-        words = WORD_INFO.slice(0, 18);
+        words = WORD_INFO.slice(15, 18);
         break;
       case 20:
-        words = WORD_INFO;
+        words = WORD_INFO.slice(18, 20);
         break;
       default:
-        words = WORD_INFO.slice(0, 9);
+        words = WORD_INFO.slice(0, 3);
     }
+    
     const randomizeWords = [...words].sort(() => Math.random() - 0.5);
-    setCallCount(0);
+    setAllWords(randomizeWords);
+    setCurrentWordIndex(0);
     setSuccessCount(0);
-    setInitWords(randomizeWords);
     setIsInitialized(false);
+    setShowFeedback(false);
+    setAttempts(0);
+    setGameEnd(false);
   }, [month]);
 
   // Generate the initial grid and update display text after `initWords` is updated
   useEffect(() => {
-    if (initWords.length > 0 && !isInitialized) {
+    if (allWords.length > 0 && !isInitialized) {
       setIsInitialized(true);
-      GenerateWordArray();
-      setRoundDisplay(callCount  + "/" + month);
+      setCurrentWordIndex(0);
     }
-  }, [initWords, isInitialized, GenerateWordArray, setRoundDisplay, month, callCount]);
+    
+    if (allWords.length > 0 && !gameEnd) {
+      GenerateGridForCurrentWord();
+    }
+  }, [allWords, isInitialized, currentWordIndex, GenerateGridForCurrentWord, gameEnd]);
+
+  /**
+   * HandleFeedbackContinue
+   *
+   * Purpose: Continue to next word after correct answer, updating score
+   */
+  const HandleFeedbackContinue = () => {
+    setShowFeedback(false);
+    
+    if (isCorrect) {
+      setSuccessCount((prevCount) => prevCount + 1);
+    }
+    
+    MoveToNextWord();
+  };
+
+  /**
+   * HandleFeedbackRetry
+   * 
+   * Purpose: Hide feedback screen without advancing to next word
+   */
+  const HandleFeedbackRetry = () => {
+    setShowFeedback(false);
+  };
 
   /**
    * HandleSelection
    * 
    * Purpose: PBoolean to determine if the selected image corresponds to word displayed and give response accordingly. 
-   * Also automatically moves to next round after display of result.
+   * Also automatically moves to next round after display of result. Also manages attempt counts and feedback screen 
+   * when answer is correct/incorrect.
    * 
    * paramaters
    * selectedImages: image selected by the user
    */
   const HandleSelection = (selectedImage) => {
-    if (selectedImage === displayImage) {
+    if (showFeedback || gameEnd) return;
+    
+    const correct = selectedImage === displayImage;
+    const newAttempts = attempts + 1;
+    
+    if (correct) {
       new Audio(congratulationsAudio).play();
-      GenerateWordArray();
-      setRoundDisplay((callCount ) + "/" + month);
-      setSuccessCount((prevCount) => prevCount + 1);
+      setIsCorrect(true);
+      setShowFeedback(true);
     } else {
       new Audio(tryAgainAudio).play();
-      GenerateWordArray();
-      setRoundDisplay((callCount ) + "/" + month);
+      setIsCorrect(false);
+      setSelectedWrongImage(selectedImage);
+      
+      if (newAttempts < 2) {
+        setAttempts(newAttempts);
+        setShowFeedback(true);
+      } else {
+        setAttempts(newAttempts);
+        setShowFeedback(true);
+      }
     }
   };
 
@@ -189,17 +254,21 @@ function WordDistribution({ month }) {
    * Purpose: Resets the game state to start a new game.
    */
   const NewGame = () => {
-    setCallCount(0);
+    const reshuffledWords = [...allWords].sort(() => Math.random() - 0.5);
+    setAllWords(reshuffledWords);
+    setCurrentWordIndex(0);
     setSuccessCount(0);
-    const reshuffledWords = [...initWords].sort(() => Math.random() - 0.5);
-    setInitWords(reshuffledWords);
     setIsInitialized(false);
     setGameEnd(false);
+    setShowFeedback(false);
+    setAttempts(0);
+    setSelectedWrongImage("");
   };
-/**
- * Purpose: returns the display of the grid along with question word based on mobile or Desktop view. 
- * Also displays final score after end of a game.
- */
+
+  /**
+   * Purpose: returns the display of the grid along with question word based on mobile or Desktop view. 
+   * Also displays final score after end of a game.
+   */
   return (
     <div>
       <MobileView
@@ -211,6 +280,7 @@ function WordDistribution({ month }) {
         roundDisplay={roundDisplay}
         boxes={boxes}
         onHandleSelection={HandleSelection}
+        showFeedback={showFeedback}
       />
       <DesktopView
         gameEnd={gameEnd}
@@ -221,7 +291,23 @@ function WordDistribution({ month }) {
         roundDisplay={roundDisplay}
         boxes={boxes}
         onHandleSelection={HandleSelection}
+        showFeedback={showFeedback}
       />
+      
+      {/* Feedback Screen */}
+      {showFeedback && (
+        <FeedbackScreen
+          isCorrect={isCorrect}
+          correctAnswer={currentCorrectAnswer}
+          miqmaqWord={displayText}
+          correctImage={displayImage}
+          wrongImage={selectedWrongImage}
+          attempts={attempts}
+          onContinue={HandleFeedbackContinue}
+          onRetry={HandleFeedbackRetry}
+          language={language}
+        />
+      )}
     </div>
   );
 }

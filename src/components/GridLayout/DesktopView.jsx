@@ -12,10 +12,9 @@
  * - Tailwind CSS: Utility-first CSS framework for styling. (https://tailwindcss.com/)
  * - Local assets for images (Michael's efforts and Microsoft Designer) and audio files.
  */
-import React from "react";
-import StarsDisplay from "./StarsDisplay";
 import PlayAudioImg from "../images/PlayAudio.png";
 import inactivePanel from "../images/colour.jpg";
+import StarsDisplay from "./StarsDisplay";
 
 /**
  * @param {*} 
@@ -27,6 +26,7 @@ import inactivePanel from "../images/colour.jpg";
  * roundDisplay: present round no
  * boxes: images inside grid
  * onHandleSelection: handles the result of selecting a image at each round
+ * showFeedback: boolean to disable clicks during feedback
  * @returns  Desktop display of user Interface
  */
 function DesktopView({
@@ -38,6 +38,7 @@ function DesktopView({
   roundDisplay,
   boxes,
   onHandleSelection,
+  showFeedback = false
 }) {
   return (
     <section className="Desktop-View hidden lg:flex">
@@ -83,19 +84,22 @@ function DesktopView({
             <h1 className="text-5xl ml-[2vw]"><strong>{displayText}</strong></h1>
             <h1 className="text-5xl mr-[3vw] ml-auto">{roundDisplay}</h1>
           </div>
+          {/* Original 3x3 grid layout */}
           <div className="grid grid-cols-3 gap-0">
             {boxes.map((box, index) => (
               <div key={index} className="grid-box w-[12vw]">
                 <img
                   src={box.image}
                   alt={box.text}
-                  {...(!(box.image === inactivePanel) && {
+                  {...(!(box.image === inactivePanel) && !showFeedback && {
                     onClick: () => onHandleSelection(box.image),
                   })}
                   className={`rounded-lg ${
                     box.image === inactivePanel
                       ? "opacity-80"
-                      : " hover:cursor-pointer"
+                      : showFeedback 
+                        ? "opacity-50 cursor-not-allowed" 
+                        : "hover:cursor-pointer hover:scale-105 transition-transform"
                   }`}
                 />
               </div>
