@@ -147,7 +147,7 @@ function Layout() {
               className="absolute bottom-[5vh] right-[5vw] z-10 object-cover w-[40vw] pointer-events-none"
             />
             <div>
-              <WordDistribution month={selectedMonth} />          
+              <WordDistribution month={selectedMonth} language={selectedLanguage} />          
             </div>
           </div>
         </div>
