@@ -12,7 +12,7 @@
  * - Local assets for images 
  */
 import { useState } from "react";
-import GoatIslandLogo from './Islandgame-images/goatislandgame.jpeg';
+import GoatIslandLogo from '../Goat island components/Islandgame-images/goatislandgame.jpeg';
 import MenuTitleImage from './images/menutitle.jpeg';
 import PictionaryImage from './images/pictionary.jpeg';
 import TitleImage from './images/title.jpeg';
