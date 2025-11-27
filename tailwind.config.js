@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        comic: ['"Comic Sans MS"', 'cursive', 'sans-serif'],
+        sans: ['Poppins', 'sans-serif'],
       },
       keyframes: {
         fadeIn: {
