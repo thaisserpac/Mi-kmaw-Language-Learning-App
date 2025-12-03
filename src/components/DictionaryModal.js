@@ -5,7 +5,7 @@
  *          English translations. Each word is represented on a flip card that, when clicked,
  *          flips to reveal an associated image and plays a pronunciation audio.
  * 
- * Author: Tooba Javed (A00468904)
+ * Author: Tooba Javed (A00468904), Jan Zubalski
  */
 
 import React from 'react';
@@ -66,7 +66,7 @@ const DictionaryModal = ({ closeModal }) => {
           <div 
           //ID for the desktop version (if not added--> test crashes as there are 2 dictionary Modals)
           data-cy="dictionary-modal-desktop"
-          className="bg-red-200 rounded-lg p-8 relative w-[98%] max-w-[80vw] max-h-[90vh] overflow-y-auto overflow-x-hidden">
+          className="bg-green-400 rounded-lg p-8 relative w-[98%] max-w-[80vw] max-h-[90vh] overflow-y-auto overflow-x-hidden">
             
             {/* Close button - allows the user to close the modal */}
             <button 

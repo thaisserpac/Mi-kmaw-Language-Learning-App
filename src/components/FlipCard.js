@@ -5,7 +5,7 @@
  *          meaning on the front. When clicked, the card flips to reveal an associated image
  *          and plays a corresponding audio pronunciation.
  * 
- * Author: Tooba Javed (A00468904)
+ * Author: Tooba Javed (A00468904), Jan Zubalski
  */
 
 import {  WORD_INFO } from "./WordBank.js";
@@ -24,7 +24,7 @@ import './FlipCard.css';
  * - englishMeaning: The English translation of the Mi'kmaq word.
  */
 const FlipCard = ({ mikmaqWord, englishMeaning }) => {
-  const [isFlipped, setIsFlipped] = useState(false); // Tracks whether the card is flipped
+  const [isFlipped, setIsFlipped] = useState(true); // Tracks whether the card is flipped
 
   /**
    * handleClick Function

@@ -6,7 +6,7 @@
  *          sides of the card. It uses Tailwind CSS utility classes to achieve the desired
  *          design and effects.
  *
- * Author: Tooba Javed (A00468904)
+ * Author: Tooba Javed (A00468904), Jan Zubalski
  *
  * Note: All styling is done using Tailwind CSS.
  *
@@ -18,6 +18,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* Flip card container */
 /* This is the outer container for the flip card, setting up dimensions and perspective */
@@ -52,7 +53,7 @@
 /* Front side of the flip card */
 /* Displays the Mi'kmaq word and English translation */
 .flip-card-front {
-  @apply bg-teal-500; /* Light green background color */
+    @apply bg-amber-700; /* Brown background color */
 }
 
 /* Back side of the flip card */
@@ -69,7 +70,7 @@
 /* Styling for the Mi'kmaq word text */
 /* Makes the Mi'kmaq word bold and prominent */
 .mikmaq-text {
-  @apply text-2xl font-extrabold; /* Larger font size and extra bold weight */
+    @apply text-2xl font-bold font-blobby text-green-100; /* Larger font size and extra bold weight */
 }
 
 /* Styling for the English translation text */
