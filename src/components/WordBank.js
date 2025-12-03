@@ -14,64 +14,64 @@
 
 // Import audio files and images for Mi'kmaq words
 import ninAudio from "./audio/ni'n.mp3";
-import ninImage from "./images/ni'n.jpeg";
+import ninImage from "./images/me.png";
 
 import kilAudio from "./audio/ki'l.mp3";
-import kilImage from "./images/ki'l.jpeg";
+import kilImage from "./images/you.png";
 
 import nemituAudio from "./audio/nemitu.mp3";
-import nemituImage from "./images/nemitu.jpeg";
+import nemituImage from "./images/my_name_is.png";
 
 import tataAudio from "./audio/ta'ta.mp3";
-import tataImage from "./images/ta'ta.png";
+import tataImage from "./images/dad.png";
 
 import ltuAudio from "./audio/l'tu.mp3";
-import ltuImage from "./images/l'tu.jpeg";
+import ltuImage from "./images/create.png";
 
 import elieyAudio from "./audio/eliey.mp3";
-import elieyImage from "./images/eliey.jpeg";
+import elieyImage from "./images/im_going.png";
 
 import wiktmAudio from "./audio/wiktm.mp3";
-import wiktmImage from "./images/wiktm.jpeg";
+import wiktmImage from "./images/i_enjoy.png";
 
 import teluisiAudio from "./audio/teluisi.mp3";
-import teluisiImage from "./images/teluisi.png";
+import teluisiImage from "./images/my_name_is.png";
 
 import mijisiAudio from "./audio/mijisi.mp3";
-import mijisiImage from "./images/mijisi.jpeg";
+import mijisiImage from "./images/eat.png";
 
 import aqqAudio from "./audio/aqq.mp3";
 import aqqImage from "./images/aqq.jpeg";
 
 import wejieyAudio from "./audio/wejiey.mp3";
-import wejieyImage from "./images/wejiey.jpeg";
+import wejieyImage from "./images/I_am_coming_from.png";
 
 import kesalkAudio from "./audio/kesalk.mp3";
-import kesalkImage from "./images/kesalk.jpeg";
+import kesalkImage from "./images/i_love.png";
 
 import kesatmAudio from "./audio/kesatm.mp3";
-import kesatmImage from "./images/kesatm.jpeg";
+import kesatmImage from "./images/Good.png";
 
 import kijuAudio from "./audio/kiju'.mp3";
-import kijuImage from "./images/kiju'.jpeg";
+import kijuImage from "./images/Mother_or_Grandmother.png";
 
 import nekmAudio from "./audio/nekm.mp3";
-import nekmImage from "./images/nekm.png";
+import nekmImage from "./images/him_or_her.png";
 
 import alatuAudio from "./audio/ala'tu.mp3";
-import alatuImage from "./images/ala'tu.png";
+import alatuImage from "./images/I_Have_it.png";
 
 import ulaAudio from "./audio/ula.mp3";
 import ulaImage from "./images/ula.png";
 
 import kesalulAudio from "./audio/kesalul.mp3";
-import kesalulImage from "./images/kesalul.png";
+import kesalulImage from "./images/i_love_you.png";
 
 import weltasiAudio from "./audio/welta'si.mp3";
-import weltasiImage from "./images/welta'si.jpeg";
+import weltasiImage from "./images/I_Am_Happy.png";
 
 import wenAudio from "./audio/wen.mp3";
-import wenImage from "./images/wen.jpeg";
+import wenImage from "./images/Who.png";
 
 /**
  * allWords
