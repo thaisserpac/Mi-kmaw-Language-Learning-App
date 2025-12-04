@@ -44,7 +44,7 @@ import aqqAudio from "./audio/aqq.mp3";
 import aqqImage from "./images/aqq.jpeg";
 
 import wejieyAudio from "./audio/wejiey.mp3";
-import wejieyImage from "./images/I_am_coming_from.png";
+import wejieyImage from "./images/wejiey.i_am_coming_from.png";
 
 import kesalkAudio from "./audio/kesalk.mp3";
 import kesalkImage from "./images/i_love.png";
@@ -76,36 +76,36 @@ import wenImage from "./images/Who.png";
 /**
  * allWords
  * 
- * Purpose: Represents a collection of Mi'kmaq words, each with its English translation,
+ * Purpose: Represents a collection of Mi'kmaq words, each with its English and French translations,
  *          associated image, and audio file.
  */
 const ALL_WORDS = [
-  { word: "ni'n", translation: "I", image: ninImage, audio: ninAudio },
-  { word: "ki'l", translation: "you", image: kilImage, audio: kilAudio },
-  { word: "teluisi", translation: "My name is...", image: teluisiImage, audio: teluisiAudio },
-  { word: "aqq", translation: "and", image: aqqImage, audio: aqqAudio },
-  { word: "mijisi", translation: "eat", image: mijisiImage, audio: mijisiAudio },
-  { word: "wiktm", translation: "I like the taste of it.", image: wiktmImage, audio: wiktmAudio },
-  { word: "kesalk", translation: "I love", image: kesalkImage, audio: kesalkAudio },
-  { word: "l'tu", translation: "Make it.", image: ltuImage, audio: ltuAudio },
-  { word: "eliey", translation: "I am going.", image: elieyImage, audio: elieyAudio },
-  { word: "nemitu", translation: "I see it", image: nemituImage, audio: nemituAudio },
-  { word: "kesatm", translation: "I like", image: kesatmImage, audio: kesatmAudio },
-  { word: "wejiey", translation: "I am coming from", image: wejieyImage, audio: wejieyAudio },
-  { word: "ta'ta", translation: "Dad", image: tataImage, audio: tataAudio },
-  { word: "kiju'", translation: "Mother or Grandmother", image: kijuImage, audio: kijuAudio },
-  { word: "nekm", translation: "Him or Her", image: nekmImage, audio: nekmAudio },
-  { word: "ala'tu", translation: "I have it", image: alatuImage, audio: alatuAudio },
-  { word: "ula", translation: "Look at this", image: ulaImage, audio: ulaAudio },
-  { word: "kesalul", translation: "I love you", image: kesalulImage, audio: kesalulAudio },
-  { word: "welta'si", translation: "I am happy", image: weltasiImage, audio: weltasiAudio },
-  { word: "wen", translation: "Who", image: wenImage, audio: wenAudio }
+  { word: "ni'n", english: "I", french: "je", image: ninImage, audio: ninAudio },
+  { word: "ki'l", english: "you", french: "tu", image: kilImage, audio: kilAudio },
+  { word: "teluisi", english: "My name is...", french: "Je m'appelle...", image: teluisiImage, audio: teluisiAudio },
+  { word: "aqq", english: "and", french: "et", image: aqqImage, audio: aqqAudio },
+  { word: "mijisi", english: "eat", french: "manger", image: mijisiImage, audio: mijisiAudio },
+  { word: "wiktm", english: "I like the taste of it.", french: "J'aime le goût.", image: wiktmImage, audio: wiktmAudio },
+  { word: "kesalk", english: "I love", french: "j'aime", image: kesalkImage, audio: kesalkAudio },
+  { word: "l'tu", english: "Make it.", french: "Fais-le.", image: ltuImage, audio: ltuAudio },
+  { word: "eliey", english: "I am going.", french: "Je vais.", image: elieyImage, audio: elieyAudio },
+  { word: "nemitu", english: "I see it", french: "je le vois", image: nemituImage, audio: nemituAudio },
+  { word: "kesatm", english: "I like", french: "j'aime", image: kesatmImage, audio: kesatmAudio },
+  { word: "wejiey", english: "I am coming from", french: "je viens de", image: wejieyImage, audio: wejieyAudio },
+  { word: "ta'ta", english: "Dad", french: "papa", image: tataImage, audio: tataAudio },
+  { word: "kiju'", english: "Mother or Grandmother", french: "mère ou grand-mère", image: kijuImage, audio: kijuAudio },
+  { word: "nekm", english: "Him or Her", french: "lui ou elle", image: nekmImage, audio: nekmAudio },
+  { word: "ala'tu", english: "I have it", french: "je l'ai", image: alatuImage, audio: alatuAudio },
+  { word: "ula", english: "Look at this", french: "regarde ça", image: ulaImage, audio: ulaAudio },
+  { word: "kesalul", english: "I love you", french: "je t'aime", image: kesalulImage, audio: kesalulAudio },
+  { word: "welta'si", english: "I am happy", french: "je suis heureux", image: weltasiImage, audio: weltasiAudio },
+  { word: "wen", english: "Who", french: "qui", image: wenImage, audio: wenAudio }
 ];
 
 /**
- * word_info
+ * WORD_INFO
  * 
- * Purpose: Transforms the `allWords` array into a simplified structure containing only
+ * Purpose: Transforms the `ALL_WORDS` array into a simplified structure containing only
  *          the word text, associated image, and audio file for use in the game.
  */
 const WORD_INFO = ALL_WORDS.map(item => ({
@@ -117,13 +117,14 @@ const WORD_INFO = ALL_WORDS.map(item => ({
 /**
  * WORDS
  * 
- * Purpose: Transforms the `allWords` array into a simplified structure containing only
- *          the word text, and english translation file for use in the game.
+ * Purpose: Transforms the `ALL_WORDS` array into a structure containing the word text
+ *          with both English and French translations for use in the dictionary.
  */
 const WORDS = ALL_WORDS.map(item => ({
   mikmaq: item.word,
-  english: item.translation  
+  english: item.english,
+  french: item.french
 }));
 
 // Export the processed data structures for use in other components
-export {WORD_INFO, WORDS as words };
+export { WORD_INFO, WORDS as words };

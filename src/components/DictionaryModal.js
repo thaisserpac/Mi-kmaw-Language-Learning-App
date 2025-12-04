@@ -2,13 +2,12 @@
  * DictionaryModal.js
  * 
  * Purpose: This component renders a modal displaying a grid of Mi'kmaq words alongside their
- *          English translations. Each word is represented on a flip card that, when clicked,
+ *          English or French translations. Each word is represented on a flip card that, when clicked,
  *          flips to reveal an associated image and plays a pronunciation audio.
  * 
- * Author: Tooba Javed (A00468904), Jan Zubalski
+ * Author: Tooba Javed (A00468904), Jan Zubalski, Mark Louis Tabudlong
  */
 
-import React from 'react';
 import FlipCard from './FlipCard';
 import { words } from './WordBank';
 
@@ -16,21 +15,21 @@ import { words } from './WordBank';
  * DictionaryModal Component
  * 
  * Purpose: This component renders a modal containing a grid of flip cards. Each card displays
- *          a Mi'kmaq word with its English translation and flips on click to reveal an image
- *          and play audio.
+ *          a Mi'kmaq word with its translation and flips on click to reveal an image and play audio.
  * 
  * Parameters:
  * - closeModal: A function that closes the modal when the "X" button is clicked.
+ * - language: The selected language ('english' or 'french') for translations.
  */
-const DictionaryModal = ({ closeModal }) => {
+const DictionaryModal = ({ closeModal, language = 'english' }) => {
   
   // Map through the 'words' array to create a list of FlipCard components.
-  // Each FlipCard receives 'mikmaq' and 'english' as props to display the word and its translation.
+  // Each FlipCard receives 'mikmaq' and the translation in the selected language.
   const flipCards = words.map((word, index) => (
     <FlipCard 
       key={index} 
       mikmaqWord={word.mikmaq} 
-      englishMeaning={word.english} 
+      englishMeaning={language === 'french' ? word.french : word.english} 
     />
   ));
 
@@ -42,7 +41,7 @@ const DictionaryModal = ({ closeModal }) => {
           <div 
           //ID for the pop-up in the mobile version to check if it opens when clicked
           data-cy="dictionary-modal"
-          className="bg-red-200 rounded-lg p-8 relative w-[98%] max-w-[400px] max-h-[86vh] overflow-y-auto overflow-x-hidden">
+          className="bg-green-200 rounded-lg p-8 relative w-[98%] max-w-[400px] max-h-[86vh] overflow-y-auto overflow-x-hidden">
             
             {/* Close button - allows the user to close the modal */}
             <button 
@@ -66,7 +65,7 @@ const DictionaryModal = ({ closeModal }) => {
           <div 
           //ID for the desktop version (if not added--> test crashes as there are 2 dictionary Modals)
           data-cy="dictionary-modal-desktop"
-          className="bg-green-400 rounded-lg p-8 relative w-[98%] max-w-[80vw] max-h-[90vh] overflow-y-auto overflow-x-hidden">
+          className="bg-red-200 rounded-lg p-8 relative w-[98%] max-w-[80vw] max-h-[90vh] overflow-y-auto overflow-x-hidden">
             
             {/* Close button - allows the user to close the modal */}
             <button 
