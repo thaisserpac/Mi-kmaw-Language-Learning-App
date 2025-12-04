@@ -85,7 +85,6 @@ function Layout() {
       {selectedGame === 'translation' && (
         <div>
           <div className="fixed top-4 right-4 z-50 flex gap-2">
-            {/* Updated to match the nice Green/Amber style */}
             <button onClick={handleSwitchGame} className={switchGameBtnClass}>
               {content.switchGame}
             </button>
@@ -105,7 +104,6 @@ function Layout() {
             >
 
               {/* Container for the app headers */}
-              {/* ▼▼▼ CHANGE THIS LINE BELOW ▼▼▼ */}
               <div className="flex flex-col h-[20vh] mt-24">
                 <h1 className="text-center text-red-700 font-bold text-4xl font-sans mt-[1vh] capitalize">
                   {content.appTitle}
@@ -117,7 +115,7 @@ function Layout() {
 
               <div className="z-20 flex items-center justify-between mx-[1vw] h-[10vh]">
                 <DropDownMenu selectedMonth={selectedMonth} onMonthChange={handleMonthSelect} />
-                <DictionaryButton />
+                <DictionaryButton language={selectedLanguage} />
               </div>
 
               <div className="flex flex-col items-center justify-center h-[70vh] w-[100vw]">
@@ -149,7 +147,7 @@ function Layout() {
               </div>
 
               <div className="z-20 flex flex-col items-center justify-between text-xl w-[60vw] mt-[5vh] h-[25vh]">
-                <DictionaryButton />
+                <DictionaryButton language={selectedLanguage} />
                 <DropDownMenu selectedMonth={selectedMonth} onMonthChange={handleMonthSelect} />
               </div>
 
@@ -160,7 +158,7 @@ function Layout() {
                   className="absolute bottom-[5vh] right-[5vw] z-10 object-cover w-[40vw] pointer-events-none"
                 />
                 <div>
-                  <WordDistribution month={selectedMonth} />
+                  <WordDistribution month={selectedMonth} language={selectedLanguage} />
                 </div>
               </div>
             </div>
