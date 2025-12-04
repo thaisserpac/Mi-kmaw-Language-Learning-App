@@ -6,7 +6,6 @@
  * 
  * Author(s): Michael Allain, Preksha Joon
  * 
- * 
  * COTS Used:
  * - React: JavaScript library for building user interfaces. (https://reactjs.org/)
  * - Tailwind CSS: Utility-first CSS framework for styling. (https://tailwindcss.com/)
@@ -14,20 +13,22 @@
  */
 import PlayAudioImg from "../images/PlayAudio.png";
 import inactivePanel from "../images/colour.jpg";
+import GameOverModal from "./GameOverModal";
 import StarsDisplay from "./StarsDisplay";
 
 /**
- * @param {*} 
- * gameEnd: boolean tells if game has ended
- * successCount: no of correct answers
- * onNewGame: resets paramaters for new game
- * onPlayAudio: Word audio
- * displayText: question word
- * roundDisplay: present round no
- * boxes: images inside grid
- * onHandleSelection: handles the result of selecting a image at each round
- * showFeedback: boolean to disable clicks during feedback
- * @returns  Mobile display of user Interface
+ * MobileView.jsx
+ * 
+ * Purpose: Focuses on mobile version features of user interface of grid, word, stars, final score display 
+ * and other elements arrangements.
+ * 
+ * Author(s): Michael Allain, Preksha Joon
+ * 
+ * 
+ * COTS Used:
+ * - React: JavaScript library for building user interfaces. (https://reactjs.org/)
+ * - Tailwind CSS: Utility-first CSS framework for styling. (https://tailwindcss.com/)
+ * - Local assets for images (Michael's efforts and Microsoft Designer) and audio files.
  */
 function MobileView({
   gameEnd,
@@ -38,40 +39,27 @@ function MobileView({
   roundDisplay,
   boxes,
   onHandleSelection,
-  showFeedback = false
+  showFeedback = false,
+  shouldSkipLastStar = false
 }) {
   return (
     <section className="Mobile-View flex lg:hidden">
       <div className="absolute items-center bottom-[2.7vh] w-[90vw]">
-        {gameEnd && (
-          <div className="fixed animate-fadeIn inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-red-200 rounded-lg shadow-lg p-[3vw] w-[95vw] h-[35vh]">
-              <h2 className="text-xl text-center font-bold font-comic mb-[5vh]">
-                kelulktelatekn
-              </h2>
-              <h4 className="text-xl font-bold font-comic mb-4 h-10 flex items-center space-x-2">
-                <span className="flex flex-wrap items-center justify-center space-x-1">
-                  <StarsDisplay successCount={successCount} />
-                </span>
-              </h4>
-              <div className="flex justify-end mt-[8vh] mr-[3vw]">
-                <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-green-600 transition font-comic"
-                  onClick={onNewGame}
-                >
-                  si'owa'si?
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        <GameOverModal 
+          isGameEnd={gameEnd}
+          successCount={successCount}
+          onNewGame={onNewGame}
+        />
+        
         <div className="mt-5">
-          {successCount > 0 && (
-            <div className="flex flex-wrap gap-1">
-              <StarsDisplay successCount={successCount} />
-            </div>
-          )}
+          <div className="flex flex-wrap gap-1">
+            <StarsDisplay 
+              successCount={successCount} 
+              shouldSkipLastStar={shouldSkipLastStar}
+            />
+          </div>
         </div>
+        
         <div className="flex items-center justify-between font-comic mb-[3vh]">
           <button onClick={onPlayAudio} id="audioBnMobile">
             <img

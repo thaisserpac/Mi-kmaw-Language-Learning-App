@@ -11,17 +11,17 @@
  * - Tailwind CSS: Utility-first CSS framework for styling. (https://tailwindcss.com/)
  * - Local assets for images (Michael's efforts and Microsoft Designer) and audio files.
  */
-import React from "react";
 import StarsDisplay from "./StarsDisplay";
 /**
  * 
  * @param 
  * isGameEnd: tells if game has ended
- * sucessCount: no of correct answers
- * onNewGame: resets paramaters for new game
- * @returns A pop up congratulating the user and asking to trk again.
+ * successCount: no of correct answers
+ * onNewGame: resets parameters for new game
+ * shouldSkipLastStar: whether the last star was skipped during gameplay
+ * @returns A pop up congratulating the user and asking to try again.
  */
-function GameOverModal({ isGameEnd, successCount, onNewGame }) {
+function GameOverModal({ isGameEnd, successCount, onNewGame, shouldSkipLastStar = false }) {
   if (!isGameEnd) return null;
 
   return (
@@ -32,7 +32,7 @@ function GameOverModal({ isGameEnd, successCount, onNewGame }) {
         </h2>
         <h4 className="text-xl font-bold font-comic mb-4 h-10 flex items-center space-x-2">
           <span className="flex flex-wrap items-center justify-center space-x-1">
-            <StarsDisplay successCount={successCount} />
+            <StarsDisplay successCount={successCount} shouldSkipLastStar={false} />
           </span>
         </h4>
         <div className="flex justify-end mt-[8vh] mr-[3vw]">

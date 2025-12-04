@@ -19,6 +19,7 @@ import congratulationsAudio from "../audio/congratulatory.mp3";
 import tryAgainAudio from "../audio/tryagain.mp3";
 import FeedbackScreen from "../FeedbackScreen";
 import inactivePanel from "../images/colour.jpg";
+import { LANGUAGE_CONTENT } from '../LanguageContent';
 import { WORD_INFO } from "../WordBank";
 import DesktopView from "./DesktopView";
 import MobileView from "./MobileView";
@@ -48,17 +49,9 @@ function WordDistribution({ month, language = "english" }) {
   const [currentCorrectAnswer, setCurrentCorrectAnswer] = useState("");
   const [selectedWrongImage, setSelectedWrongImage] = useState("");
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-
- /**
-   * gameOver
-   * 
-   * Purpose: Determines if the game has ended based on the number of rounds played.
-   */
-  const GameOver = useCallback(() => {
-    if (currentWordIndex >= allWords.length) {
-      setGameEnd(true);
-    }
-  }, [currentWordIndex, allWords.length]);
+  const [isProcessingContinue, setIsProcessingContinue] = useState(false);
+  const [shouldSkipLastStar, setShouldSkipLastStar] = useState(false);
+  const content = LANGUAGE_CONTENT[language] || LANGUAGE_CONTENT.english;
 
   /**
    * GenerateGridForCurrentWord
@@ -82,7 +75,6 @@ function WordDistribution({ month, language = "english" }) {
     // Since there are 20 words and 7 months, the last month only has 2 images. Use the very first word as the last.
     let remainingWords = [...otherWords];
     if (month === 20) {
-      // Use the first word from the first month (September - nin)
       const firstMonthFirstWord = WORD_INFO[0]
       remainingWords.push(firstMonthFirstWord);
     }
@@ -164,6 +156,8 @@ function WordDistribution({ month, language = "english" }) {
     setShowFeedback(false);
     setAttempts(0);
     setGameEnd(false);
+    setIsProcessingContinue(false);
+    setShouldSkipLastStar(false);
   }, [month]);
 
   // Generate the initial grid and update display text after `initWords` is updated
@@ -184,13 +178,24 @@ function WordDistribution({ month, language = "english" }) {
    * Purpose: Continue to next word after correct answer, updating score
    */
   const HandleFeedbackContinue = () => {
-    setShowFeedback(false);
+    if (isProcessingContinue) return;
     
-    if (isCorrect) {
-      setSuccessCount((prevCount) => prevCount + 1);
-    }
+    setIsProcessingContinue(true);
     
-    MoveToNextWord();
+    // Check if this is the last word BEFORE we move to the next one
+    const isLastWord = currentWordIndex === allWords.length - 1;
+    
+    setTimeout(() => {
+      if (isCorrect) {
+        if (isLastWord) {
+          setShouldSkipLastStar(true);
+        }
+        setSuccessCount((prevCount) => prevCount + 1);
+      }
+      
+      MoveToNextWord();
+      setIsProcessingContinue(false);
+    }, 150);
   };
 
   /**
@@ -205,36 +210,28 @@ function WordDistribution({ month, language = "english" }) {
   /**
    * HandleSelection
    * 
-   * Purpose: PBoolean to determine if the selected image corresponds to word displayed and give response accordingly. 
-   * Also automatically moves to next round after display of result. Also manages attempt counts and feedback screen 
-   * when answer is correct/incorrect.
+   * Purpose: Determines if the selected image corresponds to word displayed and gives response accordingly. 
+   * Manages attempt counts and feedback screen.
    * 
-   * paramaters
-   * selectedImages: image selected by the user
+   * parameters
+   * selectedImage: image selected by the user
    */
   const HandleSelection = (selectedImage) => {
     if (showFeedback || gameEnd) return;
     
     const correct = selectedImage === displayImage;
-    const newAttempts = attempts + 1;
     
     if (correct) {
       new Audio(congratulationsAudio).play();
       setIsCorrect(true);
-      setShowFeedback(true);
     } else {
       new Audio(tryAgainAudio).play();
       setIsCorrect(false);
       setSelectedWrongImage(selectedImage);
-      
-      if (newAttempts < 2) {
-        setAttempts(newAttempts);
-        setShowFeedback(true);
-      } else {
-        setAttempts(newAttempts);
-        setShowFeedback(true);
-      }
+      setAttempts(attempts + 1);
     }
+    
+    setShowFeedback(true);
   };
 
   /**
@@ -263,8 +260,9 @@ function WordDistribution({ month, language = "english" }) {
     setShowFeedback(false);
     setAttempts(0);
     setSelectedWrongImage("");
+    setIsProcessingContinue(false);
+    setShouldSkipLastStar(false);
   };
-
   /**
    * Purpose: returns the display of the grid along with question word based on mobile or Desktop view. 
    * Also displays final score after end of a game.
@@ -281,6 +279,7 @@ function WordDistribution({ month, language = "english" }) {
         boxes={boxes}
         onHandleSelection={HandleSelection}
         showFeedback={showFeedback}
+        shouldSkipLastStar={shouldSkipLastStar}
       />
       <DesktopView
         gameEnd={gameEnd}
@@ -292,9 +291,9 @@ function WordDistribution({ month, language = "english" }) {
         boxes={boxes}
         onHandleSelection={HandleSelection}
         showFeedback={showFeedback}
+        shouldSkipLastStar={shouldSkipLastStar}
       />
       
-      {/* Feedback Screen */}
       {showFeedback && (
         <FeedbackScreen
           isCorrect={isCorrect}
@@ -306,6 +305,7 @@ function WordDistribution({ month, language = "english" }) {
           onContinue={HandleFeedbackContinue}
           onRetry={HandleFeedbackRetry}
           language={language}
+          disableButton={isProcessingContinue}
         />
       )}
     </div>
