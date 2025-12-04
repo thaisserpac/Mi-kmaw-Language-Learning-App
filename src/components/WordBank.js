@@ -44,7 +44,7 @@ import aqqAudio from "./audio/aqq.mp3";
 import aqqImage from "./images/aqq.jpeg";
 
 import wejieyAudio from "./audio/wejiey.mp3";
-import wejieyImage from "./images/wejiey.i_am_coming_from.png";
+import wejieyImage from "./images/I_am_coming_from.png";
 
 import kesalkAudio from "./audio/kesalk.mp3";
 import kesalkImage from "./images/i_love.png";
