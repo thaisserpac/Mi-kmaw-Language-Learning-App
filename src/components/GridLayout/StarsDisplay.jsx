@@ -14,34 +14,69 @@
 import { useEffect, useRef, useState } from "react";
 import mikmaqStar from "../images/mikmaqStar.png";
 
+
 // Trigger animation when a new star is earned (skip when getting correct answer on last word to avoid overlap with game over screen)
-function StarsDisplay({ successCount, shouldSkipLastStar = false }) {
+function StarsDisplay({ isGameEnd, successCount, shouldSkipLastStar = false }) {
   const [prevCount, setPrevCount] = useState(0);
   const [animatingStarIndex, setAnimatingStarIndex] = useState(null);
   const [animationProgress, setAnimationProgress] = useState(0);
   const containerRef = useRef(null);
 
+
   useEffect(() => {
     if (successCount > prevCount && !shouldSkipLastStar) {
-      const newStarIndex = successCount - 1;
-      setAnimatingStarIndex(newStarIndex);
-      
+      const newStarIndex = successCount - 1; setAnimatingStarIndex(newStarIndex);
       const startTime = Date.now();
       const duration = 800;
-      
+
       const animate = () => {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / duration, 1);
         setAnimationProgress(progress);
-        
+
         if (progress < 1) {
           requestAnimationFrame(animate);
         } else {
           setAnimatingStarIndex(null);
         }
       };
-      
+
       requestAnimationFrame(animate);
+    }
+    else if (isGameEnd) {
+      let newStarIndex = 0;
+
+      const animateNextStar = () => {
+        if (newStarIndex < successCount) {
+
+          setAnimatingStarIndex(newStarIndex);
+          const startTime = Date.now();
+          const duration = 800;
+
+          const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            setAnimationProgress(progress);
+
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            } else {
+
+              setAnimatingStarIndex(null);
+              newStarIndex++;
+              setTimeout(animateNextStar, 300);
+            }
+          };
+
+          requestAnimationFrame(animate);
+        }
+      };
+
+
+      animateNextStar();
+
+
+
     }
     setPrevCount(successCount);
   }, [successCount, shouldSkipLastStar, prevCount]);
@@ -49,11 +84,11 @@ function StarsDisplay({ successCount, shouldSkipLastStar = false }) {
   /// Calculate position for the star
   const getAnimatedPosition = () => {
     if (animatingStarIndex === null || !containerRef.current) return null;
-    
+
     const stars = containerRef.current.children;
     const targetStar = stars[animatingStarIndex];
     if (!targetStar) return null;
-    
+
     const rect = targetStar.getBoundingClientRect();
     const easeProgress = 1 - Math.pow(1 - animationProgress, 3);
 
@@ -62,7 +97,7 @@ function StarsDisplay({ successCount, shouldSkipLastStar = false }) {
     const startY = window.innerHeight / 2;
     const endX = rect.left + rect.width / 2;
     const endY = rect.top + rect.height / 2;
-    
+
     return {
       left: startX + (endX - startX) * easeProgress - 32,
       top: startY + (endY - startY) * easeProgress - 32,
@@ -75,7 +110,7 @@ function StarsDisplay({ successCount, shouldSkipLastStar = false }) {
   const animatedPos = getAnimatedPosition();
   const displayCount = shouldSkipLastStar ? successCount - 1 : successCount;
 
-  return (
+  if (!isGameEnd) return (
     <>
       {animatedPos && (
         <div className="fixed inset-0 z-50 pointer-events-none">
@@ -104,6 +139,24 @@ function StarsDisplay({ successCount, shouldSkipLastStar = false }) {
       </div>
     </>
   );
+
+  else return (
+    // Returns stars for game over
+ 
+      <div ref={containerRef} className="flex flex-wrap justify-center gap-2 max-w-full">
+        {Array(displayCount).fill(null).map((_, index) => (
+          <img
+            key={index}
+            src={mikmaqStar}
+            alt="Success"
+            className="w-[8vw] rounded-full"
+          />
+        ))}
+      </div>
+ 
+  );
+
 }
+
 
 export default StarsDisplay;
