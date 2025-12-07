@@ -11,7 +11,10 @@
  * - Tailwind CSS: Utility-first CSS framework for styling. (https://tailwindcss.com/)
  * - Local assets for images (Michael's efforts and Microsoft Designer) and audio files.
  */
+
 import StarsDisplay from "./StarsDisplay";
+import DictionaryButton from "../DictionaryButton";
+import { createPortal } from "react-dom";
 /**
  * 
  * @param 
@@ -21,31 +24,46 @@ import StarsDisplay from "./StarsDisplay";
  * shouldSkipLastStar: whether the last star was skipped during gameplay
  * @returns A pop up congratulating the user and asking to try again.
  */
-function GameOverModal({ isGameEnd, successCount, onNewGame, shouldSkipLastStar = false }) {
+function GameOverModal({ isGameEnd, successCount, onNewGame}) {
   if (!isGameEnd) return null;
 
-  return (
+  const modalContent = (
     <div className="fixed animate-fadeIn inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-red-200 rounded-lg shadow-lg p-[3vw] w-[95vw] h-[35vh]">
-        <h2 className="text-xl text-center font-bold font-comic mb-[5vh]">
-          kelulktelatekn
-        </h2>
-        <h4 className="text-xl font-bold font-comic mb-4 h-10 flex items-center space-x-2">
-          <span className="flex flex-wrap items-center justify-center space-x-1">
-            <StarsDisplay successCount={successCount} shouldSkipLastStar={false} />
-          </span>
-        </h4>
-        <div className="flex justify-end mt-[8vh] mr-[3vw]">
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-3xl min-h-[40vh] flex flex-col overflow-hidden">
+
+        <div className="p-4 text-center">
+          <h2 className="text-4xl text-center font-bold font-comic mb-4">
+            kelulktelatekn
+          </h2>
+        </div>
+
+        <div className="flex-1 flex justify-center items-center p-4 overflow-y-auto max-h-[50vh]">
+          <div className="w-full">
+            <StarsDisplay
+              successCount={successCount}
+              isGameEnd={true}
+            />
+          </div>
+        </div>
+        <div className="p-4 flex justify-center">
+          <DictionaryButton language="english" />
+        </div>
+
+        <div className="p-4 flex justify-center border-t border-gray-200">
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-green-600 transition font-comic"
             onClick={onNewGame}
+            className="bg-green-500 hover:bg-green-600 text-white font-comic py-3 px-6 rounded-lg text-xl transition-colors"
           >
             si'owa'si?
           </button>
+
+
         </div>
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
 
 export default GameOverModal;
