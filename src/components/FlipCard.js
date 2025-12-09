@@ -46,7 +46,7 @@ const FlipCard = ({ mikmaqWord, englishMeaning }) => {
    */
     
     useEffect(() => {
-      if (isFlipped && wordData) {
+      if (!isFlipped && wordData) {
         const audio = new Audio(wordData.audio);  // Play the corresponding audio
         audio.play();
       }
