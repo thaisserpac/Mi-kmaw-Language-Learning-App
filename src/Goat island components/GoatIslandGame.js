@@ -14,7 +14,7 @@
  *   - Reset all game state when the player chooses to restart.
  *
  * Author: Kimone Barrett A00454699
- *         Thais
+ *         Thais Serpa Chaves
  */
 
 
@@ -76,15 +76,6 @@ const GoatIslandGame = () => {
     // const [earnedBadges, setEarnedBadges] = useState([]);
     // Variables for pausing game
     const [correctStreak, setCorrectStreak] = useState(0);
-    //
-    // const earnBadge = useCallback((animalName) => {
-    //     setEarnedBadges(prevBadges => {
-    //         if(!prevBadges.includes(animalName)){
-    //             return [...prevBadges, animalName];
-    //         }
-    //         return prevBadges;
-    //     });
-    // }, [])
 
     const startGame = useCallback(() => {
         setGameStarted(true);
@@ -120,9 +111,7 @@ const GoatIslandGame = () => {
                 setAttempts(0);
                 setScore(prevScore => prevScore + 1);
 
-                // console.log("response in checkAnswers:", response);
                 setShowImage(prev => [...prev, response]);
-                // console.log('From Show Image', showImage)
 
                 setCorrectStreak( prev => {
                     const newCount = prev + 1;
@@ -182,14 +171,14 @@ const GoatIslandGame = () => {
     }, [numHints]);
 
     return (
-        <div data-cy={"gameover-modal"} className={'h-screen w-full flex absolute inset-0 justify-center bg-cover bg-center bg-no-repeat object-fill'}
+        <div className={'h-screen w-full flex absolute inset-0 justify-center bg-cover bg-center bg-no-repeat object-fill'}
              style={{backgroundImage: `url(${Background})`}}>
 
             {/*DICTIONARY AND HINTS*/}
             <div className={'inset-0 absolute'}>
                 <GiPawPrint
                     data-cy={"dictionary-button"}
-                    className={'cursor-pointer size-24 text-yellow-600'}
+                    className={'cursor-pointer size-24 text-yellow-600 hover:scale-110'}
                     onClick={() => setOpenDictionaryModal(true)}/>
 
                 <div className={'flex flex-row gap-3'}>
@@ -217,7 +206,6 @@ const GoatIslandGame = () => {
                     <GameOver isCompleted={isCompleted}
                               resetGame={resetGame}
                               score={score}
-                              responses={showImage}
                               length={Landmarks.length}/>
                 </div>
             ) : !gameStarted ? (

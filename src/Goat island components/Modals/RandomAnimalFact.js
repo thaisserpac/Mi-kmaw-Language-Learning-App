@@ -12,7 +12,7 @@
  *   • GoatIslandGame.js — Controls when this modal appears (on 3 correct answers).
  *
  * Author: Kimone Barrett A00454699
- *         Thais
+ *         Thais Serpa Chaves
  */
 
 
@@ -62,7 +62,7 @@ export const RandomAnimalFact = ({unlockedAnimals, Close}) => {
                                                     alt={animal.name}
                                                     className={'size-32 object-contain mb-2'}/>
                                             )}
-                                            <p className={'font-semibold text-center'}>{animal.name}</p>
+                                            <p className={'font-semibold text-center'}>{animal.Word}</p>
                                         </div>
                                     )
                                 })}

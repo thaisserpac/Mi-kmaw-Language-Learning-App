@@ -8,8 +8,8 @@
  *   performance results, and a path to restart the game.
  *
  * Author: Kimone Barrett A00454699
+ *         Thais Serpa Chaves
  */
-
 
 import React from 'react';
 import GameOverScreenBackground from '../Islandgame-images/GameOverScreenBackground.jpg';
@@ -21,7 +21,7 @@ import {GiPawPrint} from "react-icons/gi";
 import Dictionary from "./dictionary";
 import {useState} from "react";
 
-const GameOver = ({isCompleted, resetGame, responses, score, length}) => {
+const GameOver = ({isCompleted, resetGame, score, length}) => {
     const [openDict, setOpenDict] = useState(null);
 
     if(openDict){
@@ -48,19 +48,19 @@ const GameOver = ({isCompleted, resetGame, responses, score, length}) => {
                         </div>
                         <div className={'flex flex-col text-center text-xl font-bold'}>
                             {isCompleted ? (
-                                <p className={'flex items-center text-sm'}>
+                                <p className={'flex items-center text-sm text-white'}>
                                     You answered all the questions
                                     <span className={'inline-flex items-center justify-center'}>
                                     <GiPawPrint onClick={()=>setOpenDict(true)}
-                                                   className={'cursor-pointer size-10/12 hover:scale-110'}/>
+                                                   className={'cursor-pointer size-8 hover:scale-110'}/>
                                     </span>
                                 </p>
                             ) : (
-                                <p className={'flex items-center gap-1'}>
+                                <p className={'flex items-center text-sm text-white'}>
                                     You ran out of attempts. Check out dictionary
                                     <span className={'inline-flex items-center justify-center'}>
                                     <GiPawPrint onClick={()=>setOpenDict(true)}
-                                                   className={'cursor-pointer hover:scale-105'}/>
+                                                   className={'cursor-pointer size-8 hover:scale-105'}/>
                                 </span>
                                 </p>
                             )}
