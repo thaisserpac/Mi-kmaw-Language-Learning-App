@@ -40,7 +40,7 @@ function GameSelector({ onGameSelect }) {
           className="hidden lg:flex fixed inset-0 z-50 bg-cover bg-center min-h-screen flex-col items-center justify-center"
           style={{ backgroundImage: `url(${TitleImage})` }}
         >
-          <button
+          <button data-cy={"Play"}
             onClick={handlePlayClick}
             className="bg-amber-800 hover:bg-amber-700 text-white font-bold text-4xl py-6 px-16 rounded-full transition-all duration-300 transform hover:scale-110 shadow-2xl border-8 border-amber-950 font-sans mt-[60vh]"
           >
@@ -121,7 +121,7 @@ function GameSelector({ onGameSelect }) {
 
           {/* OPTION 2: Goat Island */}
           <div className="flex flex-col items-center w-full">
-            <div 
+            <div data-cy="select-goat-island"
               // Card Size: w-48 (mobile) vs w-72 (desktop)
               className="rounded-3xl shadow-2xl border-4 border-amber-800 hover:border-amber-700 transition-all duration-300 transform hover:scale-105 cursor-pointer w-48 h-48 sm:w-72 sm:h-72 relative overflow-hidden bg-white"
               onClick={() => handleGameSelect('goatIsland')}
@@ -139,7 +139,7 @@ function GameSelector({ onGameSelect }) {
                   Choose Language
                 </h4>
                 <div className="flex justify-center gap-2">
-                  <button
+                  <button data-cy="goat-island"
                     onClick={() => handleLanguageSelect('english', 'goatIsland')}
                     className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-xl shadow border-2 border-green-800 text-xs sm:text-sm transition-transform hover:scale-105"
                   >

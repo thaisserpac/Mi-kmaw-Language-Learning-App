@@ -1,3 +1,29 @@
+/**
+ * Landmarks.js
+ *
+ * Purpose:
+ *   This module defines the list of landmark locations used in the Goat Island
+ *   Mi'kmaq Language Learning Game. Each landmark represents an activity or cultural
+ *   location on Goat Island (e.g., Drum Making, Basket Weaving, Kayaking), and acts
+ *   as a clickable point where a new vocabulary question is triggered.
+ *
+ *
+ * Notes:
+ *   - Landmarks determine the progression order of questions.
+ *   - Coordinates (x, y) position each landmark on the map background image.
+ *   - These values are used by components such as:
+ *        - GoatIslandGame (main gameplay)
+ *        - ActiveQuestionComponent (activates when a landmark is clicked)
+ *        - Cypress E2E tests (selecting visible landmarks)
+ *
+ * Gameplay Role:
+ *   Players click landmarks to answer vocabulary questions. Completed landmarks
+ *   are visually replaced with a checkmark to track progress. This structure
+ *   ensures an intuitive, map-based learning experience suitable for early learners.
+ *
+ * Author: Kimone Barrett A00454699
+ */
+
 import Basket from './Islandgame-images/basketmaking.png';
 import Bread from './Islandgame-images/breadmaking.png';
 import Dance from './Islandgame-images/dance.png';

@@ -12,7 +12,7 @@ import DropDownMenu from './components/Dropdown';
 import GameSelector from './components/GameSelector';
 import WordDistribution from './components/GridLayout/WordDistribution';
 import { LANGUAGE_CONTENT } from './components/LanguageContent';
-import StartGameScreen from "./Goat island components/startGameScreen";
+import StartGameScreen from "./Goat island components/components/startGameScreen";
 
 function Layout() {
   const [selectedMonth, setSelectedMonth] = useState(3);
