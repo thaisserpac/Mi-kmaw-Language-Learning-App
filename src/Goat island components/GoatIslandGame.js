@@ -13,28 +13,26 @@
  *   - Shuffle question order each game session.
  *   - Reset all game state when the player chooses to restart.
  *
- * Author: Kimone Barrett A00454699
- *         Thais Serpa Chaves
+ * Author: Kimone Barrett A00454699, Mark Louis Tabudlong A00468931, Thais Serpa
  */
 
-
+import { useCallback, useState } from "react";
+import { GiPawPrint, GiTiedScroll } from "react-icons/gi";
+import { ImFlag } from "react-icons/im";
+import { GOAT_ISLAND_LANGUAGE } from "./GoatIslandLanguageContent";
 import Background from "./Islandgame-images/Island.png";
 import CheckMark from './Islandgame-images/checkmark.png';
-import {Landmarks} from "./landmarks";
-import {Questions} from "./questions";
-import {useCallback, useState} from "react";
-import {GiPawPrint } from "react-icons/gi";
-import {GiTiedScroll} from "react-icons/gi";
-import { ImFlag } from "react-icons/im";
 import AnsweredCorrectly from "./Modals/AnsweredCorrectly";
-import IncorrectAnswer from "./Modals/IncorrectAnswer";
-import HintsComponent from "./Modals/HintsComponent";
 import GameOver from "./Modals/GameOver";
-import {NoMoreHintsComponents} from "./Modals/NoHintsModalComponent";
-import {ActiveQuestionComponent} from "./components/ActiveQuestionComponent";
+import HintsComponent from "./Modals/HintsComponent";
+import IncorrectAnswer from "./Modals/IncorrectAnswer";
+import { NoMoreHintsComponents } from "./Modals/NoHintsModalComponent";
+import { RandomAnimalFact } from "./Modals/RandomAnimalFact";
 import Dictionary from "./Modals/dictionary";
-import {QuestionHeader} from "./components/QuestionHeader";
-import {RandomAnimalFact} from "./Modals/RandomAnimalFact";
+import { ActiveQuestionComponent } from "./components/ActiveQuestionComponent";
+import { QuestionHeader } from "./components/QuestionHeader";
+import { Landmarks } from "./landmarks";
+import { Questions } from "./questions";
 
 function shuffleQuestions(array) {
     const shuffled = [...array];
@@ -49,7 +47,9 @@ function shuffleQuestions(array) {
     return shuffled;
 }
 
-const GoatIslandGame = () => {
+const GoatIslandGame = ({ language = "english" }) => {
+    const content = GOAT_ISLAND_LANGUAGE[language] || GOAT_ISLAND_LANGUAGE.english;
+    
     const [shuffledArray, setShuffledArray] = useState(() => shuffleQuestions(Questions));
     const [completedLandmarks, setCompletedLandmarks] = useState(new Array(Landmarks.length).fill(false));
     const nextIndex = completedLandmarks.findIndex(isCompleted => isCompleted === false);
@@ -157,7 +157,6 @@ const GoatIslandGame = () => {
         setShowImage([]);
     }, []);
 
-
     const getHint = useCallback(() => {
         setShowRemainingAttempts(false);
         setAvailableHints(numHints - 1);
@@ -171,14 +170,14 @@ const GoatIslandGame = () => {
     }, [numHints]);
 
     return (
-        <div className={'h-screen w-full flex absolute inset-0 justify-center bg-cover bg-center bg-no-repeat object-fill'}
+        <div data-cy={"gameover-modal"} className={'h-screen w-full flex absolute inset-0 justify-center bg-cover bg-center bg-no-repeat object-fill'}
              style={{backgroundImage: `url(${Background})`}}>
 
             {/*DICTIONARY AND HINTS*/}
             <div className={'inset-0 absolute'}>
                 <GiPawPrint
                     data-cy={"dictionary-button"}
-                    className={'cursor-pointer size-24 text-yellow-600 hover:scale-110'}
+                    className={'cursor-pointer size-24 text-yellow-600'}
                     onClick={() => setOpenDictionaryModal(true)}/>
 
                 <div className={'flex flex-row gap-3'}>
@@ -192,26 +191,38 @@ const GoatIslandGame = () => {
                 <RandomAnimalFact
                     Close={() => setOpenFactModal(false)}
                     unlockedAnimals={showImage}
+                    content={content}
+                    language={language}  
                 />
             )}
 
             {/*OPEN DICTIONARY MODAL*/}
             {openDictionaryModal &&(
-                <Dictionary response={showImage} CloseModal={() => setOpenDictionaryModal(false)}/>
+                <Dictionary 
+                    response={showImage} 
+                    CloseModal={() => setOpenDictionaryModal(false)} 
+                    content={content}
+                    language={language} 
+                />
             )}
 
             {/*DISPLAY LANDMARKS OR GAME OVER PAGE*/}
             {isGameOver || attempts >= MAX_ATTEMPTS ? (
                 <div className={'animate-fadeIn'}>
-                    <GameOver isCompleted={isCompleted}
-                              resetGame={resetGame}
-                              score={score}
-                              length={Landmarks.length}/>
+                    <GameOver 
+                        isCompleted={isCompleted}
+                        resetGame={resetGame}
+                        score={score}
+                        responses={showImage}
+                        length={Landmarks.length}
+                        content={content}
+                        language={language} 
+                    />
                 </div>
             ) : !gameStarted ? (
                 <>
                     <div className={'text-center fixed text-3xl font-bold font-comic'}>
-                        <p>Eskasoni Goat Island <br/>Game</p>
+                        <p>{content.gameTitle}</p>
                     </div>
                     <div>
                         <ImFlag data-cy={"start-flag"}
@@ -223,7 +234,7 @@ const GoatIslandGame = () => {
                 <div>
                     {/*CONTAINER FOR QUESTIONS*/}
                     <div className="w-full flex justify-center items-center mt-4 absolute top-0 left-0">
-                        <QuestionHeader currentQuestion={activeQuestion} />
+                        <QuestionHeader currentQuestion={activeQuestion} content={content} />
                     </div>
                     {Landmarks.map((landmark, index) => (
                         <div key={index}>
@@ -267,28 +278,35 @@ const GoatIslandGame = () => {
                     {/*CORRECT ANSWER MODAL*/}
                     {answeredCorrectly && (
                         <AnsweredCorrectly
-                            dictModal={openDictionaryModal}
                             response={showImage}
-                            nextQuestion={handleCorrectAnswerContinue}/>
+                            nextQuestion={handleCorrectAnswerContinue}
+                            content={content}
+                            language={language}  
+                        />
                     )}
                     {/*INCORRECT ANSWER MODAL*/}
                     {showRemainingAttempts && (
                         <IncorrectAnswer
                             getHintFunction={getHint}
                             attempts={showRemainingAttempts}
-                            close={() => setShowRemainingAttempts(null)}/>
+                            close={() => setShowRemainingAttempts(null)}
+                            content={content}/>
                     )}
                     {/*HINTS MODAL*/}
                     {showHints && (
                         <HintsComponent
                             close={() => setShowHint(null)}
                             question={activeQuestion}
-                            numHints={numHints}/>
+                            numHints={numHints}
+                            content={content}
+                            language={language}  
+                        />
                     )}
                     {/*NO HINTS REMAINING MODAL*/}
                     {noHints && (
                         <NoMoreHintsComponents
                             Close={() => setNoHints(false)}
+                            content={content}
                         />
                     )}
                 </div>
