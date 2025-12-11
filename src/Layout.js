@@ -77,7 +77,7 @@ function Layout() {
               {selectedLanguage === 'english' ? 'French' : 'English'}
             </button>
           </div>
-          <StartGameScreen />
+          <StartGameScreen language={selectedLanguage} />
         </div>
       )}
 
