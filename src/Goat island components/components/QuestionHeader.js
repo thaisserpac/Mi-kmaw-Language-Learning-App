@@ -9,13 +9,12 @@
  * Author: Kimone Barrett A00454699
  */
 
-
-export const QuestionHeader = ({currentQuestion}) =>{
+export const QuestionHeader = ({currentQuestion, content}) =>{
     return (
         <div className={'absolute top-0 text-3xl font-bold items-center'}>
             {currentQuestion
-                ? <h2>Question: {currentQuestion.Word}</h2>
-                : "Click a landmark to play"
+                ? <h2>{content.question}: {currentQuestion.Word}</h2>
+                : content.clickLandmark
             }
         </div>
     )
