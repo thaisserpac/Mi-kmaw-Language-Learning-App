@@ -62,7 +62,7 @@ export const RandomAnimalFact = ({unlockedAnimals, Close, content, language}) =>
                                                     alt={animal.name}
                                                     className={'size-32 object-contain mb-2'}/>
                                             )}
-                                            <p className={'font-semibold text-center'}>{animal.name}</p>
+                                            <p className={'font-semibold text-center'}>{animal.Word}</p>
                                         </div>
                                     )
                                 })}

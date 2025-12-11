@@ -7,7 +7,7 @@
  *   ran out of attempts (failure). This modal provides visual feedback,
  *   performance results, and a path to restart the game.
  *
- * Author: Kimone Barrett A00454699, Mark Louis Tabudlong A00468931
+ * Author: Kimone Barrett A00454699, Mark Louis Tabudlong A00468931, Thais Serpa
  */
 
 import { useState } from "react";
@@ -19,7 +19,7 @@ import Boy from '../Islandgame-images/boy.png';
 import Girl from '../Islandgame-images/girl.png';
 import Dictionary from "./dictionary";
 
-const GameOver = ({isCompleted, resetGame, responses, score, length, content, language}) => {
+const GameOver = ({isCompleted, resetGame, score, length, content, language}) => {
     const [openDict, setOpenDict] = useState(null);
 
     if(openDict){
@@ -46,19 +46,19 @@ const GameOver = ({isCompleted, resetGame, responses, score, length, content, la
                         </div>
                         <div className={'flex flex-col text-center text-xl font-bold'}>
                             {isCompleted ? (
-                                <p className={'flex items-center text-sm'}>
+                                <p className={'flex items-center text-sm text-white'}>
                                     {content.answeredAllQuestions}
                                     <span className={'inline-flex items-center justify-center'}>
                                     <GiPawPrint onClick={()=>setOpenDict(true)}
-                                                   className={'cursor-pointer size-10/12 hover:scale-110'}/>
+                                                   className={'cursor-pointer size-8 hover:scale-110'}/>
                                     </span>
                                 </p>
                             ) : (
-                                <p className={'flex items-center gap-1'}>
+                                <p className={'flex items-center text-sm text-white'}>
                                     {content.ranOutAttempts}
                                     <span className={'inline-flex items-center justify-center'}>
                                     <GiPawPrint onClick={()=>setOpenDict(true)}
-                                                   className={'cursor-pointer hover:scale-105'}/>
+                                                   className={'cursor-pointer size-8 hover:scale-105'}/>
                                 </span>
                                 </p>
                             )}
