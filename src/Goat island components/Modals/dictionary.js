@@ -12,17 +12,17 @@
  *   The dictionary supports animated opening using Framer-Motion and allows users
  *   to click an animal image to reveal its Mi'kmaq word and translation.
  *
- * Author: Kimone Barrett A00454699
+ * Author: Kimone Barrett A00454699, Mark Louis Tabudlong A00468931
  */
 
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { IoClose } from "react-icons/io5";
+import { Dictionary_Words } from "../Dictionary_Words";
 import DictionaryBackground from "../Islandgame-images/DictionaryBackground.png";
 import Background from '../Islandgame-images/StartScreenBackground.png';
-import {motion} from "framer-motion";
-import {Dictionary_Words} from "../Dictionary_Words";
-import {IoClose} from "react-icons/io5";
-import {useState} from "react";
 
-const Dictionary = ({CloseModal, response}) => {
+const Dictionary = ({CloseModal, response, content, language = "english"}) => {
     const [showWord, setShowWord] = useState(null);
 
     function toggleImage(index){
@@ -56,7 +56,7 @@ const Dictionary = ({CloseModal, response}) => {
                         <div className="w-8"></div>
                         <h2 className={'text-2xl sm:text-3xl text-amber-900 drop-shadow-sm text-center'}
                             style={{ fontFamily: '"Titan One", sans-serif' }}>
-                            Island Dictionary
+                            {content.islandDictionary}
                         </h2>
                         <span onClick={CloseModal} className={'cursor-pointer text-amber-900 hover:text-red-600 hover:scale-110 transition-transform'}>
                             <IoClose size={32}/>
@@ -64,7 +64,7 @@ const Dictionary = ({CloseModal, response}) => {
                     </div>
 
                     <p className={'text-center text-lg text-amber-800 mb-2 shadow-2xl shadow-amber-950'} style={{ fontFamily: '"Titan One", sans-serif' }}>
-                        Animals of the Island 🦌
+                        {content.animalsOfIslandLabel}
                     </p>
 
                     {/* SCROLLABLE GRID AREA
@@ -78,11 +78,13 @@ const Dictionary = ({CloseModal, response}) => {
                                         <img src={words.img} alt={words.name}
                                              className={'w-14 h-14 sm:w-16 sm:h-16 object-contain cursor-pointer hover:-translate-y-2 transition-transform'}
                                              onClick={() => toggleImage(idx)}/>
-                                        {/* Name Label */}
+                                        {/* Name Label - Show French or English based on language */}
                                         {showWord === idx && (
                                             <div className={'absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-[#fdf6e3] border-2 border-amber-800 rounded-lg px-2 py-1 z-50 w-max shadow-lg'}>
                                                 <p className={'text-sm text-amber-900'} style={{ fontFamily: '"Titan One", sans-serif' }}>{words.word}</p>
-                                                <p className={'text-xs text-amber-700 font-bold'}>({words.EnglishTranslation})</p>
+                                                <p className={'text-xs text-amber-700 font-bold'}>
+                                                    {language === 'french' ? words.french : words.english}
+                                                </p>
                                             </div>
                                         )}
                                     </div>
@@ -99,10 +101,13 @@ const Dictionary = ({CloseModal, response}) => {
                                                     <img src={words.img} alt={words.name}
                                                          className={'w-14 h-14 sm:w-16 sm:h-16 object-contain cursor-pointer hover:-translate-y-2 transition-transform'}
                                                          onClick={() => toggleImage(index)}/>
+                                                    {/* Name Label - Show French or English based on language */}
                                                     {showWord === index && (
                                                         <div className={'absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-[#fdf6e3] border-2 border-amber-800 rounded-lg px-2 py-1 z-50 w-max shadow-lg'}>
                                                             <p className={'text-sm text-amber-900'} style={{ fontFamily: '"Titan One", sans-serif' }}>{words.word}</p>
-                                                            <p className={'text-xs text-amber-700 font-bold'}>({words.EnglishTranslation})</p>
+                                                            <p className={'text-xs text-amber-700 font-bold'}>
+                                                                {language === 'french' ? words.french : words.english}
+                                                            </p>
                                                         </div>
                                                     )}
                                                 </div>

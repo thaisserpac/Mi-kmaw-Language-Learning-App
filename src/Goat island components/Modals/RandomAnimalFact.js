@@ -11,19 +11,17 @@
  *   • AnimalFactDetail.js — Displays a single animal fact.
  *   • GoatIslandGame.js — Controls when this modal appears (on 3 correct answers).
  *
- * Author: Kimone Barrett A00454699
- *         Thais Serpa Chaves
+ * Author: Kimone Barrett A00454699, Mark Louis Tabudlong A00468931, Thais Serpa
  */
 
-
-import {useState} from "react";
-import Girl from "../Islandgame-images/girl.png";
-import Boy from "../Islandgame-images/boy.png";
+import { useState } from "react";
 import BirchPaper from "../Islandgame-images/BirchPaper.png";
+import Boy from "../Islandgame-images/boy.png";
+import Girl from "../Islandgame-images/girl.png";
 import IslandBackground from "../Islandgame-images/StartScreenBackground.png";
-import {AnimalFactDetail} from "./AnimalFactDetail";
+import { AnimalFactDetail } from "./AnimalFactDetail";
 
-export const RandomAnimalFact = ({unlockedAnimals, Close}) => {
+export const RandomAnimalFact = ({unlockedAnimals, Close, content, language}) => {
     const [selectedAnimal, setSelectedAnimal] = useState(null)
 
     if(selectedAnimal){
@@ -31,7 +29,9 @@ export const RandomAnimalFact = ({unlockedAnimals, Close}) => {
             <div className={'inset-0 absolute flex items-center justify-center bg-black/75 z-50'}>
                 <AnimalFactDetail animal={selectedAnimal}
                                   Close={Close}
-                                  onBack={()=> setSelectedAnimal(null)} />
+                                  onBack={()=> setSelectedAnimal(null)}
+                                  content={content}
+                                  language={language} /> 
             </div>
         )
     }
@@ -45,9 +45,9 @@ export const RandomAnimalFact = ({unlockedAnimals, Close}) => {
             <div className={'absolute w-[38%] h-96 flex items-center'}>
                 <div className={'absolute inset-0 flex justify-center'}>
                     <div className={'flex flex-col gap-2 w-full items-center'}>
-                        <h2 className={'text-3xl font-extrabold text-center text-green-800'}>Animal Fact Library Unlocked</h2>
+                        <h2 className={'text-3xl font-extrabold text-center text-green-800'}>{content.factLibraryUnlocked}</h2>
                         <div className={'w-[90%] border border-solid border-green-50'}></div>
-                        <p className={'text-lg font-medium text-green-600'}>You unlocked a fact about these animals! Click one to view.</p>
+                        <p className={'text-lg font-medium text-green-600'}>{content.clickToView}</p>
                         <div className={'relative w-full'}>
                             <div className={'z-50 pointer-events-auto flex gap-6 h-52 w-full justify-start flex-nowrap overflow-x-scroll overflow-y-visible hide-scrollbar'}>
                                 {unlockedAnimals.map((animal, index)=>{
@@ -62,7 +62,7 @@ export const RandomAnimalFact = ({unlockedAnimals, Close}) => {
                                                     alt={animal.name}
                                                     className={'size-32 object-contain mb-2'}/>
                                             )}
-                                            <p className={'font-semibold text-center'}>{animal.Word}</p>
+                                            <p className={'font-semibold text-center'}>{animal.name}</p>
                                         </div>
                                     )
                                 })}
@@ -70,7 +70,7 @@ export const RandomAnimalFact = ({unlockedAnimals, Close}) => {
                             <div className={'absolute right-0 top-0 h-full rounded-tr rounded-br w-12 bg-gradient-to-l from-white to-transparent pointer-events-none'}></div>
                         </div>
                         <div className={'text-center z-10'}>
-                            <button onClick={Close} className={'px-6 py-3 cursor-pointer hover:scale-110 bg-amber-600 text-white font-bold rounded-lg hover:bg-amber-700 transition-colors'}>Continue Game</button>
+                            <button onClick={Close} className={'px-6 py-3 cursor-pointer hover:scale-110 bg-amber-600 text-white font-bold rounded-lg hover:bg-amber-700 transition-colors'}>{content.continueGame}</button>
                         </div>
                     </div>
                 </div>
