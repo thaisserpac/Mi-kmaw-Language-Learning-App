@@ -170,14 +170,14 @@ const GoatIslandGame = ({ language = "english" }) => {
     }, [numHints]);
 
     return (
-        <div data-cy={"gameover-modal"} className={'h-screen w-full flex absolute inset-0 justify-center bg-cover bg-center bg-no-repeat object-fill'}
+        <div className={'h-screen w-full flex absolute inset-0 justify-center bg-cover bg-center bg-no-repeat object-fill'}
              style={{backgroundImage: `url(${Background})`}}>
 
             {/*DICTIONARY AND HINTS*/}
             <div className={'inset-0 absolute'}>
                 <GiPawPrint
                     data-cy={"dictionary-button"}
-                    className={'cursor-pointer size-24 text-yellow-600'}
+                    className={'cursor-pointer size-24 text-yellow-600 hover:scale-110'}
                     onClick={() => setOpenDictionaryModal(true)}/>
 
                 <div className={'flex flex-row gap-3'}>
@@ -213,7 +213,6 @@ const GoatIslandGame = ({ language = "english" }) => {
                         isCompleted={isCompleted}
                         resetGame={resetGame}
                         score={score}
-                        responses={showImage}
                         length={Landmarks.length}
                         content={content}
                         language={language} 
