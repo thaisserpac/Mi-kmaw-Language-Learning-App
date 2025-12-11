@@ -65,7 +65,7 @@ const DictionaryModal = ({ closeModal, language = 'english' }) => {
           <div 
           //ID for the desktop version (if not added--> test crashes as there are 2 dictionary Modals)
           data-cy="dictionary-modal-desktop"
-          className="bg-red-200 rounded-lg p-8 relative w-[98%] max-w-[80vw] max-h-[90vh] overflow-y-auto overflow-x-hidden">
+          className="bg-green-400 rounded-lg p-8 relative w-[98%] max-w-[80vw] max-h-[90vh] overflow-y-auto overflow-x-hidden">
             
             {/* Close button - allows the user to close the modal */}
             <button 
