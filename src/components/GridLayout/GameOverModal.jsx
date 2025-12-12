@@ -45,10 +45,7 @@ function GameOverModal({ isGameEnd, successCount, onNewGame}) {
             />
           </div>
         </div>
-        <div className="p-4 flex justify-center">
-          <DictionaryButton language="english" />
-        </div>
-
+       
         <div className="p-4 flex justify-center border-t border-gray-200">
           <button
             onClick={onNewGame}
