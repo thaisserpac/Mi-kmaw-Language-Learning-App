@@ -18,7 +18,7 @@
 
 import { useCallback, useState } from "react";
 import { GiPawPrint, GiTiedScroll } from "react-icons/gi";
-import { ImFlag } from "react-icons/im";
+import PlayFlag from "./Islandgame-images/playflag.png";
 import { GOAT_ISLAND_LANGUAGE } from "./GoatIslandLanguageContent";
 import Background from "./Islandgame-images/Island.png";
 import CheckMark from './Islandgame-images/checkmark.png';
@@ -224,9 +224,7 @@ const GoatIslandGame = ({ language = "english" }) => {
                         <p>{content.gameTitle}</p>
                     </div>
                     <div>
-                        <ImFlag data-cy={"start-flag"}
-                            onClick={startGame}
-                            className={'text-amber-300 size-36 absolute top-48 left-80 hover:scale-105 hover:animate-none cursor-pointer animate-pulse'}/>
+                        <img src={PlayFlag} alt={'Play Flag'} onClick={startGame} className={'size-36 absolute top-48 left-80 hover:scale-105 hover:animate-none cursor-pointer animate-pulse'}/>
                     </div>
                 </>
             ) : (
