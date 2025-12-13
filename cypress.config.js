@@ -1,18 +1,30 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
-  e2e: {
-    supportFile: false,
-    setupNodeEvents(on, config) {
-      // implement node event listeners here
+  component: {
+    indexHtmlFile: 'cypress/support/Component-Index.html', 
+    
+    devServer: {
+      framework: "create-react-app",
+      bundler: "webpack",
+      webpackConfig: {
+        module: {
+          rules: [
+            {
+              test: /\.(mp3|wav|ogg)$/,
+              loader: 'file-loader',
+              options: {
+                name: '[path][name].[ext]',
+              },
+            },
+          ],
+        },
+      },
     },
   },
-
-  component: {
-    devServer: {
-        framework: "react",
-        bundler: "webpack",
-        webpackConfig: require("./cypress/webpack.config.js"),
+  e2e: {
+    setupNodeEvents(on, config) {
+      // implement node event listeners here
     },
   },
 });

@@ -49,7 +49,7 @@ function shuffleQuestions(array) {
 
 const GoatIslandGame = ({ language = "english" }) => {
     const content = GOAT_ISLAND_LANGUAGE[language] || GOAT_ISLAND_LANGUAGE.english;
-    
+
     const [shuffledArray, setShuffledArray] = useState(() => shuffleQuestions(Questions));
     const [completedLandmarks, setCompletedLandmarks] = useState(new Array(Landmarks.length).fill(false));
     const nextIndex = completedLandmarks.findIndex(isCompleted => isCompleted === false);
@@ -113,10 +113,10 @@ const GoatIslandGame = ({ language = "english" }) => {
 
                 setShowImage(prev => [...prev, response]);
 
-                setCorrectStreak( prev => {
+                setCorrectStreak(prev => {
                     const newCount = prev + 1;
 
-                    if(newCount >= 3){
+                    if (newCount >= 3) {
                         setOpenFactModal(true);
                         return 0;
                     }
@@ -127,7 +127,7 @@ const GoatIslandGame = ({ language = "english" }) => {
                 setAttempts(newAttempts);
 
                 if (attempts >= MAX_ATTEMPTS) {
-                    setCurrentQuestion({isGameOverDueToFailure: true})
+                    setCurrentQuestion({ isGameOverDueToFailure: true })
                     setShowRemainingAttempts(null)
                 } else {
                     setShowRemainingAttempts(MAX_ATTEMPTS - newAttempts);
@@ -171,51 +171,51 @@ const GoatIslandGame = ({ language = "english" }) => {
 
     return (
         <div className={'h-screen w-full flex absolute inset-0 justify-center bg-cover bg-center bg-no-repeat object-fill'}
-             style={{backgroundImage: `url(${Background})`}}>
+            style={{ backgroundImage: `url(${Background})` }}>
 
             {/*DICTIONARY AND HINTS*/}
             <div className={'inset-0 absolute'}>
                 <GiPawPrint
                     data-cy={"dictionary-button"}
                     className={'cursor-pointer size-24 text-yellow-600 hover:scale-110'}
-                    onClick={() => setOpenDictionaryModal(true)}/>
+                    onClick={() => setOpenDictionaryModal(true)} />
 
                 <div className={'flex flex-row gap-3'}>
-                    {Array.from({length: Math.min(numHints, MAX_HINTS)}, (_, index) => (
-                        <GiTiedScroll className={'size-12 '} key={index}/>
+                    {Array.from({ length: Math.min(numHints, MAX_HINTS) }, (_, index) => (
+                        <GiTiedScroll className={'size-12 '} key={index} />
                     ))}
                 </div>
             </div>
 
-            {openFactModal &&(
+            {openFactModal && (
                 <RandomAnimalFact
                     Close={() => setOpenFactModal(false)}
                     unlockedAnimals={showImage}
                     content={content}
-                    language={language}  
+                    language={language}
                 />
             )}
 
             {/*OPEN DICTIONARY MODAL*/}
-            {openDictionaryModal &&(
-                <Dictionary 
-                    response={showImage} 
-                    CloseModal={() => setOpenDictionaryModal(false)} 
+            {openDictionaryModal && (
+                <Dictionary
+                    response={showImage}
+                    CloseModal={() => setOpenDictionaryModal(false)}
                     content={content}
-                    language={language} 
+                    language={language}
                 />
             )}
 
             {/*DISPLAY LANDMARKS OR GAME OVER PAGE*/}
             {isGameOver || attempts >= MAX_ATTEMPTS ? (
                 <div className={'animate-fadeIn'}>
-                    <GameOver 
+                    <GameOver
                         isCompleted={isCompleted}
                         resetGame={resetGame}
                         score={score}
                         length={Landmarks.length}
                         content={content}
-                        language={language} 
+                        language={language}
                     />
                 </div>
             ) : !gameStarted ? (
@@ -224,8 +224,13 @@ const GoatIslandGame = ({ language = "english" }) => {
                         <p>{content.gameTitle}</p>
                     </div>
                     <div>
-                        <img src={PlayFlag} alt={'Play Flag'} onClick={startGame} className={'size-36 absolute top-48 left-80 hover:scale-105 hover:animate-none cursor-pointer animate-pulse'}/>
-                    </div>
+                        <img
+                            src={PlayFlag}
+                            alt={'Play Flag'}
+                            onClick={startGame}
+                            className={'size-36 absolute top-48 left-80 hover:scale-105 hover:animate-none cursor-pointer animate-pulse'}
+                            data-cy="start-flag"
+                        />                    </div>
                 </>
             ) : (
                 <div>
@@ -237,14 +242,13 @@ const GoatIslandGame = ({ language = "english" }) => {
                         <div key={index}>
                             <div
                                 className={`size-24 absolute bg-center bg-cover bg-no-repeat hover:scale-105
-                                 ${
-                                    activeIndex === index
+                                 ${activeIndex === index
                                         ? ''
                                         : (currentQuestion || index !== nextIndex
-                                                ? 'cursor-not-allowed'
-                                                : 'hover:cursor-pointer'
+                                            ? 'cursor-not-allowed'
+                                            : 'hover:cursor-pointer'
                                         )
-                                }`}
+                                    }`}
                                 style={{
                                     backgroundImage: `url(${completedLandmarks[index]
                                         ? CheckMark
@@ -278,7 +282,7 @@ const GoatIslandGame = ({ language = "english" }) => {
                             response={showImage}
                             nextQuestion={handleCorrectAnswerContinue}
                             content={content}
-                            language={language}  
+                            language={language}
                         />
                     )}
                     {/*INCORRECT ANSWER MODAL*/}
@@ -287,7 +291,7 @@ const GoatIslandGame = ({ language = "english" }) => {
                             getHintFunction={getHint}
                             attempts={showRemainingAttempts}
                             close={() => setShowRemainingAttempts(null)}
-                            content={content}/>
+                            content={content} />
                     )}
                     {/*HINTS MODAL*/}
                     {showHints && (
@@ -296,7 +300,7 @@ const GoatIslandGame = ({ language = "english" }) => {
                             question={activeQuestion}
                             numHints={numHints}
                             content={content}
-                            language={language}  
+                            language={language}
                         />
                     )}
                     {/*NO HINTS REMAINING MODAL*/}
